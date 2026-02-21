@@ -36,16 +36,16 @@ Yahoo Japan IT ニュースの RSS フィードを **24時間ごとに自動取�
 
 ```mermaid
 graph TD
-    A[Schedule Trigger] --> B[RSS Read]
-    B --> C[Text Classifier]
-    C -- relevant --> D[Limit]
-    C -- non-relevant --> E[No Operation]
-    C -- error --> F[Slack Error Notify]
-    D --> G[HTTP Request]
-    G --> H[Extract Article Text]
-    H -- success --> I[LLM Chain + Gemini + Output Parser]
-    H -- error --> SKIP[skip]
-    I --> J[Slack Post]
+    A["Schedule Trigger"] --> B["RSS Read"]
+    B --> C["Text Classifier"]
+    C -- "relevant" --> D["Limit"]
+    C -- "not relevant" --> E["No Operation"]
+    C -- "error" --> F["Slack Error"]
+    D --> G["HTTP Request"]
+    G --> H["Extract Article"]
+    H -- "success" --> I["LLM Chain"]
+    H -- "error" --> SKIP["skip"]
+    I --> J["Slack Post"]
 ```
 
 ---
