@@ -36,22 +36,18 @@ Yahoo Japan IT ニュースの RSS フィードを **24時間ごとに自動取�
 
 ```mermaid
 flowchart TD
-    SCH([Schedule Trigger\n24h interval]) --> RSS[RSS Read\nYahoo IT News]
-    RSS --> CLS{Text Classifier\nGemini}
-
-    CLS -->|relevant| LIM[Limit\nmaxItems = 1]
-    CLS -->|non-relevant| NOP[No Operation\nskip]
-    CLS -->|error| ERR[Send a message\nSlack error notify]
-
-    LIM --> HTT[HTTP Request\nretry x2 on fail]
-    HTT --> EXT[Extract Article Text\nCode Node with guards]
-    EXT -->|success| LLM[Basic LLM Chain\nretry on fail]
-    EXT -->|error| SKIP[skip item]
-    LLM --> SLK[Slack\npost trend news]
-
-    GEM[Google Gemini\nChat Model] -.->|ai_languageModel| LLM
-    SOP[Structured Output\nParser] -.->|ai_outputParser| LLM
-
+    SCH([Schedule Trigger]) --> RSS[RSS Read]
+    RSS --> CLS{Text Classifier}
+    CLS -->|relevant| LIM[Limit - maxItems = 1]
+    CLS -->|non-relevant| NOP[No Operation]
+    CLS -->|error| ERR[Slack - Error Notify]
+    LIM --> HTT[HTTP Request - retry x2]
+    HTT --> EXT[Extract Article Text]
+    EXT -->|success| LLM[Basic LLM Chain - retry]
+    EXT -->|error| SKIP[skip]
+    LLM --> SLK[Slack - Post News]
+    GEM[Gemini Chat Model] -.->|ai_languageModel| LLM
+    SOP[Structured Output Parser] -.->|ai_outputParser| LLM
     style SCH fill:#4CAF50,color:#fff
     style SLK fill:#4A90D9,color:#fff
     style ERR fill:#E53935,color:#fff
