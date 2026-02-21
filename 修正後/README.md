@@ -38,7 +38,7 @@ Yahoo Japan IT ニュースの RSS フィードを **24時間ごとに自動取�
 flowchart TD
     A[Schedule Trigger] --> B[RSS Read]
     B --> C{Text Classifier}
-    C -->|relevant| D[Limit - maxItems=1]
+    C -->|relevant| D[Limit]
     C -->|non-relevant| E[No Operation]
     C -->|error| F[Slack Error]
     D --> G[HTTP Request]
@@ -46,8 +46,11 @@ flowchart TD
     H -->|success| I[LLM Chain]
     H -->|error| SKIP[skip]
     I --> J[Slack Post]
-    K[Gemini Model] -.-> I
-    L[Output Parser] -.-> I
+    subgraph AI
+        I
+        K[Gemini Model]
+        L[Output Parser]
+    end
     style A fill:#4CAF50,color:#fff
     style J fill:#4A90D9,color:#fff
     style F fill:#E53935,color:#fff

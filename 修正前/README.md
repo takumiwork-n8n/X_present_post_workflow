@@ -52,8 +52,11 @@ flowchart TD
     G --> H[Extract Article]
     H --> I[LLM Chain]
     I --> J[Slack Post]
-    K[Gemini Model] -.-> I
-    L[Output Parser] -.-> I
+    subgraph AI
+        I
+        K[Gemini Model]
+        L[Output Parser]
+    end
     style A fill:#4CAF50,color:#fff
     style J fill:#4A90D9,color:#fff
     style F fill:#E53935,color:#fff
