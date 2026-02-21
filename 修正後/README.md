@@ -36,28 +36,28 @@ Yahoo Japan IT ニュースの RSS フィードを **24時間ごとに自動取�
 
 ```mermaid
 flowchart TD
-    SCH([Schedule Trigger]) --> RSS[RSS Read]
-    RSS --> CLS{Text Classifier}
-    CLS -->|relevant| LIM[Limit - maxItems = 1]
-    CLS -->|non-relevant| NOP[No Operation]
-    CLS -->|error| ERR[Slack - Error Notify]
-    LIM --> HTT[HTTP Request - retry x2]
-    HTT --> EXT[Extract Article Text]
-    EXT -->|success| LLM[Basic LLM Chain - retry]
-    EXT -->|error| SKIP[skip]
-    LLM --> SLK[Slack - Post News]
-    GEM[Gemini Chat Model] -.->|ai_languageModel| LLM
-    SOP[Structured Output Parser] -.->|ai_outputParser| LLM
-    style SCH fill:#4CAF50,color:#fff
-    style SLK fill:#4A90D9,color:#fff
-    style ERR fill:#E53935,color:#fff
-    style NOP fill:#9E9E9E,color:#fff
+    A[Schedule Trigger] --> B[RSS Read]
+    B --> C{Text Classifier}
+    C -->|relevant| D[Limit - maxItems=1]
+    C -->|non-relevant| E[No Operation]
+    C -->|error| F[Slack Error]
+    D --> G[HTTP Request]
+    G --> H[Extract Article]
+    H -->|success| I[LLM Chain]
+    H -->|error| SKIP[skip]
+    I --> J[Slack Post]
+    K[Gemini Model] -.-> I
+    L[Output Parser] -.-> I
+    style A fill:#4CAF50,color:#fff
+    style J fill:#4A90D9,color:#fff
+    style F fill:#E53935,color:#fff
+    style E fill:#9E9E9E,color:#fff
     style SKIP fill:#9E9E9E,color:#fff
-    style LIM fill:#4CAF50,color:#fff
-    style CLS fill:#9C27B0,color:#fff
-    style LLM fill:#9C27B0,color:#fff
-    style GEM fill:#5c6bc0,color:#fff
-    style SOP fill:#5c6bc0,color:#fff
+    style D fill:#4CAF50,color:#fff
+    style C fill:#9C27B0,color:#fff
+    style I fill:#9C27B0,color:#fff
+    style K fill:#5c6bc0,color:#fff
+    style L fill:#5c6bc0,color:#fff
 ```
 
 ---
