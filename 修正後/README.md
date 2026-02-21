@@ -35,32 +35,17 @@ Yahoo Japan IT ニュースの RSS フィードを **24時間ごとに自動取�
 ## フロー図
 
 ```mermaid
-flowchart TD
+graph TD
     A[Schedule Trigger] --> B[RSS Read]
-    B --> C{Text Classifier}
-    C -->|relevant| D[Limit]
-    C -->|non-relevant| E[No Operation]
-    C -->|error| F[Slack Error]
+    B --> C[Text Classifier]
+    C -- relevant --> D[Limit]
+    C -- non-relevant --> E[No Operation]
+    C -- error --> F[Slack Error Notify]
     D --> G[HTTP Request]
-    G --> H[Extract Article]
-    H -->|success| I[LLM Chain]
-    H -->|error| SKIP[skip]
+    G --> H[Extract Article Text]
+    H -- success --> I[LLM Chain + Gemini + Output Parser]
+    H -- error --> SKIP[skip]
     I --> J[Slack Post]
-    subgraph AI
-        I
-        K[Gemini Model]
-        L[Output Parser]
-    end
-    style A fill:#4CAF50,color:#fff
-    style J fill:#4A90D9,color:#fff
-    style F fill:#E53935,color:#fff
-    style E fill:#9E9E9E,color:#fff
-    style SKIP fill:#9E9E9E,color:#fff
-    style D fill:#4CAF50,color:#fff
-    style C fill:#9C27B0,color:#fff
-    style I fill:#9C27B0,color:#fff
-    style K fill:#5c6bc0,color:#fff
-    style L fill:#5c6bc0,color:#fff
 ```
 
 ---
